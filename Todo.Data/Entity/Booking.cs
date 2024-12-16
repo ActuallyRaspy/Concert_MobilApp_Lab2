@@ -6,7 +6,7 @@ namespace Todo.Data.Entity;
 public class Booking
 {
     [Key]
-    public required int ID { get; set; }
+    public required string ID { get; set; }
 
     [Required]
     [StringLength(25)]

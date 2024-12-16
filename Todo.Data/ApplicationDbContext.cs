@@ -36,7 +36,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Concert>(entity =>
         {
             entity.HasKey(c => c.ID);
-            entity.Property(c => c.ID).IsRequired();
+            entity.Property(c => c.ID).IsRequired().HasDefaultValueSql("NEWID()");
             entity.Property(c => c.Title).HasMaxLength(50).IsRequired();
             entity.Property(c => c.Description).HasMaxLength(500).IsRequired();
 
@@ -50,7 +50,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Performance>(entity =>
         {
             entity.HasKey(p => p.ID);
-            entity.Property(p => p.ID).IsRequired();
+            entity.Property(p => p.ID).IsRequired().HasDefaultValueSql("NEWID()");
             entity.Property(p => p.Date).IsRequired();
             entity.Property(p => p.Location).HasMaxLength(500).IsRequired();
 
@@ -65,7 +65,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.HasKey(b => b.ID);
-            entity.Property(b => b.ID).IsRequired();
+            entity.Property(b => b.ID).IsRequired().HasDefaultValueSql("NEWID()");
             entity.Property(b => b.Name).HasMaxLength(25).IsRequired();
             entity.Property(b => b.Email).HasMaxLength(500).IsRequired();
 

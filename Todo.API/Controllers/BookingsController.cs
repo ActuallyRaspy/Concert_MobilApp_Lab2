@@ -18,12 +18,12 @@ public enum ErrorCode
 
 [ApiController]
 [Route("api/[controller]")]
-public class TodoItemsController : ControllerBase
+public class BookingsController : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public TodoItemsController(IUnitOfWork unitOfWork, IMapper mapper)
+    public BookingsController(IUnitOfWork unitOfWork, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
@@ -32,7 +32,7 @@ public class TodoItemsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> List()
     {
-        return Ok(_mapper.Map<IEnumerable<TodoItemDto>>(await _unitOfWork.TodoItems.All()));
+        return Ok(_mapper.Map<IEnumerable<TodoItemDto>>(await _unitOfWork.Bookings.All()));
     }
 
     [HttpPost]
@@ -46,13 +46,13 @@ public class TodoItemsController : ControllerBase
             {
                 return BadRequest(ErrorCode.TodoItemNameAndNotesRequired.ToString());
             }
-            bool itemExists = await _unitOfWork.TodoItems.DoesItemExist(item.ID);
+            bool itemExists = await _unitOfWork.Bookings.DoesItemExist(item.ID);
             if (itemExists)
             {
                 return StatusCode(StatusCodes.Status409Conflict,
                 ErrorCode.TodoItemIDInUse.ToString());
             }
-            _unitOfWork.TodoItems.Insert(item);
+            _unitOfWork.Bookings.Insert(item);
             int affectedItems = await _unitOfWork.Complete();
         }
         catch (Exception)
@@ -73,16 +73,16 @@ public class TodoItemsController : ControllerBase
             {
                 return BadRequest(ErrorCode.TodoItemNameAndNotesRequired.ToString());
             }
-            var existingItem = await _unitOfWork.TodoItems.Find(item.ID);
+            var existingItem = await _unitOfWork.Bookings.Find(item.ID);
             if (existingItem == null)
             {
                 return NotFound(ErrorCode.RecordNotFound.ToString());
             }
             item.Comments = existingItem.Comments;
             //_todoRepository.Update(item);
-            //_unitOfWork.TodoItems.Update(item);
-            _unitOfWork.TodoItems.Delete(existingItem);
-            _unitOfWork.TodoItems.Insert(item);
+            //_unitOfWork.Bookings.Update(item);
+            _unitOfWork.Bookings.Delete(existingItem);
+            _unitOfWork.Bookings.Insert(item);
             int affectedItems = await _unitOfWork.Complete();
         }
         catch (Exception)
@@ -99,13 +99,13 @@ public class TodoItemsController : ControllerBase
         Booking? item;
         try
         {
-            item = await _unitOfWork.TodoItems.Find(id);
+            item = await _unitOfWork.Bookings.Find(id);
             if (item == null)
             {
                 return NotFound(ErrorCode.RecordNotFound.ToString());
             }
             //_todoRepository.Delete(id);
-            _unitOfWork.TodoItems.Delete(id);
+            _unitOfWork.Bookings.Delete(id);
             int affectedItems = await _unitOfWork.Complete();
         }
         catch (Exception)
