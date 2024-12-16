@@ -1,0 +1,35 @@
+@Todo.API_HostAddress = https://localhost:5001
+
+GET {{Todo.API_HostAddress}}/api/todoitems
+Accept: application/json
+
+###
+
+POST {{Todo.API_HostAddress}}/api/todoitems
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": "096A37F3-E56F-496B-B190-710358BA6131",
+  "name": "Test apps",
+  "notes": "Use NUnit to write unit tests",
+  "done": true
+}
+
+###
+
+PUT {{Todo.API_HostAddress}}/api/todoitems
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": "096A37F3-E56F-496B-B190-710358BA6131",
+  "name": "Test apps",
+  "notes": "Use xUnit to write unit tests",
+  "done": true
+}
+
+###
+
+DELETE {{Todo.API_HostAddress}}/api/todoitems/096A37F3-E56F-496B-B190-710358BA6131
+Accept: application/json
