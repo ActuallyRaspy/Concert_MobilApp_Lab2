@@ -11,7 +11,7 @@ namespace Todo.Data.Entity
     public class Concert
     {
         [Key]
-        public required string ID { get; set; }
+        public required int ID { get; set; }
 
         [Required]
         [StringLength(50)]

@@ -11,7 +11,7 @@ namespace Todo.Data.Entity
     public class Performance
     {
         [Key]
-        public required string ID { get; set; }
+        public required int ID { get; set; }
 
         [Required]
         public required DateTime Date { get; set; }
