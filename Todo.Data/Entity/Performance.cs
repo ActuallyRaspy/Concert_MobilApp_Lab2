@@ -21,6 +21,9 @@ namespace Todo.Data.Entity
         public required string Location { get; set; }
 
         [Required]
+        public required ICollection<Booking> Bookings { get; set; }
+
+        [Required]
         [ForeignKey(nameof(Concert.ID))]
         public required string ConcertID { get; set; }
 

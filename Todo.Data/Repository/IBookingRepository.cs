@@ -2,7 +2,7 @@
 
 namespace Todo.Data.Repository;
 
-public interface ITodoItemRepository : IRepository<Booking>
+public interface IBookingRepository : IRepository<Booking>
 {
     Task<bool> DoesItemExist(string id);
     Task<Booking?> Find(string id);

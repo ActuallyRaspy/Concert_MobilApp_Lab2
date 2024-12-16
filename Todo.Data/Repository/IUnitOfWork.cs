@@ -2,6 +2,9 @@
 
 public interface IUnitOfWork : IDisposable
 {
-    ITodoItemRepository TodoItems { get; }
+    IBookingRepository Bookings { get; }
+    IConcertRepository Concerts{ get; }
+    IPerformanceRepository Performances{ get; }
+
     Task<int> Complete();
 }

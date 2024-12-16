@@ -4,12 +4,15 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ApplicationDbContext context;
 
-    public ITodoItemRepository TodoItems { get; private set; }
+    public IBookingRepository Bookings { get; private set; }
+    public IConcertRepository Concerts{ get; private set; }
+    public IPerformanceRepository Performances { get; private set; }
+
 
     public UnitOfWork(ApplicationDbContext context)
     {
         this.context = context;
-        TodoItems = new BookingRepository(context);
+        Bookings = new BookingRepository(context);
     }
 
     public async Task<int> Complete()
