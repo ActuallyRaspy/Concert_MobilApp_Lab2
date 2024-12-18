@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using Todo.MAUI.Models;
 using Todo.MAUI.Services;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,10 @@ namespace Todo.MAUI.ViewModels
         [RelayCommand]
         public async Task Test()
         {
-            List <Concert> test = new(await concertservice.GetConcertsAsync() ?? []);
+            List<Concert> test = new(await concertservice.GetConcertsAsync() ?? []);
             foreach (Concert concert in test) {
-                text += concert.Title; }
+                await Shell.Current.DisplayAlert("Error", concert.Title+concert.Description, "OK");
+            }
         }
         public BookingsPageVM(IConcertService concertservice)
         {

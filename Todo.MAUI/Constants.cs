@@ -12,5 +12,8 @@ public static class Constants
     : "localhost";
     public static string Scheme = "https"; // or http
     public static string Port = "5001"; // or 5000
-    public static string RestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/api/todoitems/{{0}}";
+    public static string BaseUrl = $"{Scheme}://{LocalhostUrl}:{Port}/api/Concerts";
+
+    // URL with dynamic ID for operations like getting by ID or deleting
+    public static string RestUrl => $"{Scheme}://{LocalhostUrl}:{Port}/api/Concerts/{{0}}";
 }

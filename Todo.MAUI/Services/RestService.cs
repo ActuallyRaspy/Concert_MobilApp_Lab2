@@ -39,7 +39,9 @@ _client = new HttpClient();
     public async Task<List<Concert>?> RefreshDataAsync()
     {
         Items = new List<Concert>();
-        Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
+        Uri uri = new Uri(string.Format(Constants.BaseUrl, string.Empty));
+        Debug.WriteLine($"Requesting: {uri}"); // Prints the full URL
+
         try
         {
             HttpResponseMessage response = await _client.GetAsync(uri);
