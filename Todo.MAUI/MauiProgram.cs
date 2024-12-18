@@ -27,17 +27,25 @@ public static class MauiProgram
         // Services
         builder.Services.AddSingleton<IHttpsClientHandlerService, HttpsClientHandlerService>();
         builder.Services.AddSingleton<IRestService, RestService>();
-        builder.Services.AddSingleton<ITodoService, TodoService>();
+        builder.Services.AddSingleton<IConcertService, ConcertService>();
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         //builder.Services.AddAutoMapper(typeof(TodoItemProfile));
 
         // Pages
-        builder.Services.AddSingleton<TodoListPage>();
-        builder.Services.AddTransient<TodoItemPage>();
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddSingleton<ConcertPage>();
+        builder.Services.AddSingleton<ConcertDetailsPage>();
+        builder.Services.AddSingleton<BookPerformancePage>();
+        builder.Services.AddSingleton<BookingsPage>();
+
 
         // ViewModels
-        builder.Services.AddSingleton<TodoListViewModel>();
-        builder.Services.AddTransient<TodoItemViewModel>();
+        builder.Services.AddSingleton<MainPageVM>();
+        builder.Services.AddSingleton<ConcertPageVM>();
+        builder.Services.AddSingleton<ConcertDetailsPageVM>();
+        builder.Services.AddSingleton<BookPerformancePageVM>();
+        builder.Services.AddSingleton<BookingsPageVM>();
+
         return builder.Build();
     }
 }

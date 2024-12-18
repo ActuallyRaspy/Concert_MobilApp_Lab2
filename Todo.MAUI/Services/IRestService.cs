@@ -5,6 +5,6 @@ namespace Todo.MAUI.Services;
 public interface IRestService
 {
     Task<List<TodoItem>?> RefreshDataAsync();
-    Task SaveTodoItemAsync(TodoItem item, bool isNewItem);
-    Task DeleteTodoItemAsync(string id);
+    Task SaveConcertAsync(Concert concert, bool isNewConcert);
+    Task DeleteConcertAsync(string id);
 }

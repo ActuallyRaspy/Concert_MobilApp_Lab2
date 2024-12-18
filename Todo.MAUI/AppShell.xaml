@@ -8,8 +8,27 @@
     Title="Todo.MAUI"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:TodoListPage}"
-        Route="MainPage" />
+    <TabBar>
+        <Tab Title="Home">
+            <ShellContent
+                ContentTemplate="{DataTemplate views:MainPage}"
+                Route="MainPage" />
+        </Tab>
+        <Tab Title="Concerts">
+            <ShellContent 
+                ContentTemplate="{DataTemplate views:ConcertPage}"
+                Route="ConcertPage" />
+        </Tab>
+        <Tab Title="Bookings">
+            <ShellContent 
+                ContentTemplate="{DataTemplate views:BookingsPage}"
+                Route="BookingsPage" />
+        </Tab>
+    </TabBar>
+    <ShellContent 
+    ContentTemplate="{DataTemplate views:BookPerformancePage}"
+    Route="BookPerformancePage" />
+    <ShellContent 
+    ContentTemplate="{DataTemplate views:ConcertDetailsPage}"
+    Route="ConcertDetailsPage" />
 </Shell>
