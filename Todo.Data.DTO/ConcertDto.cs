@@ -24,4 +24,4 @@ namespace Todo.Data.DTO
 
         public ICollection<PerformanceDto>? Performances { get; set; } = new List<PerformanceDto>();
     }
-}
+}   
