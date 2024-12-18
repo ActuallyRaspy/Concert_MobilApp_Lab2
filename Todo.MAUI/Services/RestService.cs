@@ -14,7 +14,7 @@ public class RestService : IRestService
     private IHttpsClientHandlerService _httpsClientHandlerService;
     private IMapper _mapper;
 
-    public List<TodoItem>? Items { get; private set; }
+    public List<Concert>? Items { get; private set; }
 
     public RestService(IHttpsClientHandlerService service, IMapper mapper)
     {
@@ -36,9 +36,9 @@ _client = new HttpClient();
         };
     }
 
-    public async Task<List<TodoItem>?> RefreshDataAsync()
+    public async Task<List<Concert>?> RefreshDataAsync()
     {
-        Items = new List<TodoItem>();
+        Items = new List<Concert>();
         Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
         try
         {
@@ -46,9 +46,9 @@ _client = new HttpClient();
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                Items = _mapper.Map<List<TodoItem>>
+                Items = _mapper.Map<List<Concert>>
                 (
-                JsonSerializer.Deserialize<List<BookingDto>>(content, _serializerOptions)
+                JsonSerializer.Deserialize<List<ConcertDto>>(content, _serializerOptions)
                 );
             }
         }
@@ -59,21 +59,21 @@ _client = new HttpClient();
         return Items;
     }
 
-    public async Task SaveTodoItemAsync(TodoItem item, bool isNewItem = false)
+    public async Task SaveConcertAsync(Concert concert, bool isNewConcert = false)
     {
         Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
         try
         {
-            string json = JsonSerializer.Serialize<BookingDto>(_mapper.Map<BookingDto>(item),
+            string json = JsonSerializer.Serialize<BookingDto>(_mapper.Map<BookingDto>(concert),
             _serializerOptions);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = null!;
-            if (isNewItem)
+            if (isNewConcert)
                 response = await _client.PostAsync(uri, content);
             else
                 response = await _client.PutAsync(uri, content);
             if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
+                Debug.WriteLine(@"\tConcert successfully saved.");
         }
         catch (Exception ex)
         {
@@ -81,14 +81,14 @@ _client = new HttpClient();
         }
     }
 
-    public async Task DeleteTodoItemAsync(string id)
+    public async Task DeleteConcertAsync(string id)
     {
         Uri uri = new Uri(string.Format(Constants.RestUrl, id));
         try
         {
             HttpResponseMessage response = await _client.DeleteAsync(uri);
             if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully deleted.");
+                Debug.WriteLine(@"\tConcert successfully deleted.");
         }
         catch (Exception ex)
         {

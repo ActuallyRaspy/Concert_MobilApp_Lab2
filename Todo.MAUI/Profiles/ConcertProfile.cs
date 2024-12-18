@@ -2,28 +2,26 @@
 using Todo.Data.DTO;
 using Todo.MAUI.Models;
 
-namespace TodoREST.Profiles;
+namespace Todo.Maui.Profiles;
 
-public class TodoItemProfile : Profile
+public class ConcertProfile : Profile
 {
-    public TodoItemProfile()
+    public ConcertProfile()
     {
         // Map Model to DTO
         // Note that "dest.Name" gets its value from "src.TaskName"
-        CreateMap<TodoItem, BookingDto>()
+        CreateMap<Concert, ConcertDto>()
         .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.ID))
-        .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.TaskName))
-        .ForMember(dest => dest.Notes, opt => opt.MapFrom(src => src.Notes))
-        .ForMember(dest => dest.Done, opt => opt.MapFrom(src => src.Done));
+        .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+        .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+        .ForMember(dest => dest.Performances, opt => opt.MapFrom(src => src.Performances));
 
         // Map DTO to Model
         // Note that "dest.TaskName" gets its value from "src.Name"
-        CreateMap<BookingDto, TodoItem>()
+        CreateMap<ConcertDto, Concert>()
         .ForMember(dest => dest.ID, opt => opt.MapFrom(src => src.ID))
-        .ForMember(dest => dest.TaskName, opt => opt.MapFrom(src => src.Name))
-        .ForMember(dest => dest.Notes, opt => opt.MapFrom(src => src.Notes))
-        .ForMember(dest => dest.Done, opt => opt.MapFrom(src => src.Done));
-
-        //CreateMap<TodoItem, TodoItemDto>().ReverseMap();
+        .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+        .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+        .ForMember(dest => dest.Performances, opt => opt.MapFrom(src => src.Performances));
     }
 }
