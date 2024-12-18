@@ -16,7 +16,7 @@ builder.Services.AddSwaggerGen();
 // Add DbContext, UnitOfWork, and AutoMapper to the Services container
 //builder.Services.AddSingleton<ITodoRepository, TodoRepository>(); <-- don't need this anymore
 builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("Todo"))
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("ConcertApp"))
 );
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 

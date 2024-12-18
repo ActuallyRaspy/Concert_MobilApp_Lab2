@@ -38,4 +38,30 @@ public class ConcertsController : ControllerBase
         }
         return Ok(_mapper.Map<ConcertDto>(concert));
     }
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] ConcertDto dto)
+    {
+        Concert item;
+        try
+        {
+            item = _mapper.Map<Concert>(dto);
+            if (item == null || !ModelState.IsValid)
+            {
+                return BadRequest(ErrorCode.BookingNameRequired.ToString()); //ändra
+            }
+            bool itemExists = await _unitOfWork.Concerts.DoesItemExist(item.ID);
+            if (itemExists)
+            {
+                return StatusCode(StatusCodes.Status409Conflict,
+                ErrorCode.BookingIDInUse.ToString()); //ändra
+            }
+            _unitOfWork.Concerts.Insert(item);
+            int affectedItems = await _unitOfWork.Complete();
+        }
+        catch (Exception)
+        {
+            return BadRequest(ErrorCode.CouldNotCreateItem.ToString());
+        }
+        return Ok(_mapper.Map<BookingDto>(item));
+    }
 }
