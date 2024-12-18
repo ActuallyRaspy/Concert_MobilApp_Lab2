@@ -8,8 +8,8 @@ namespace TodoAPI.Controllers;
 
 public enum ErrorCode
 {
-    TodoItemNameAndNotesRequired,
-    TodoItemIDInUse,
+    BookingNameRequired,
+    BookingIDInUse,
     RecordNotFound,
     CouldNotCreateItem,
     CouldNotUpdateItem,
@@ -32,22 +32,9 @@ public class BookingsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> ListBookings()
     {
-        return Ok(_mapper.Map<IEnumerable<BookingDto>>(await _unitOfWork.Bookings.All()));
+        var bookings = await _unitOfWork.Bookings.All();
+        return Ok(_mapper.Map<IEnumerable<BookingDto>>(bookings));
     }
-
-    [HttpGet]
-    public async Task<IActionResult> ListConcerts()
-    {
-        return Ok(_mapper.Map<IEnumerable<BookingDto>>(await _unitOfWork.Concerts.All()));
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> ListPerformances()
-    {
-        return Ok(_mapper.Map<IEnumerable<BookingDto>>(await _unitOfWork.Performances.All()));
-    }
-
-
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] BookingDto dto)
@@ -58,13 +45,13 @@ public class BookingsController : ControllerBase
             item = _mapper.Map<Booking>(dto);
             if (item == null || !ModelState.IsValid)
             {
-                return BadRequest(ErrorCode.TodoItemNameAndNotesRequired.ToString());
+                return BadRequest(ErrorCode.BookingNameRequired.ToString());
             }
             bool itemExists = await _unitOfWork.Bookings.DoesItemExist(item.ID);
             if (itemExists)
             {
                 return StatusCode(StatusCodes.Status409Conflict,
-                ErrorCode.TodoItemIDInUse.ToString());
+                ErrorCode.BookingIDInUse.ToString());
             }
             _unitOfWork.Bookings.Insert(item);
             int affectedItems = await _unitOfWork.Complete();
@@ -77,7 +64,7 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Edit([FromBody] BookingDto dto) // Only edits booking.performance, should probably be changed
+    public async Task<IActionResult> Edit([FromBody] BookingDto dto) // Only edits booking.name, should probably be changed??
     {
         Booking item;
         try
@@ -85,18 +72,16 @@ public class BookingsController : ControllerBase
             item = _mapper.Map<Booking>(dto);
             if (item == null || !ModelState.IsValid)
             {
-                return BadRequest(ErrorCode.TodoItemNameAndNotesRequired.ToString());
+                return BadRequest(ErrorCode.BookingNameRequired.ToString());
             }
             var existingItem = await _unitOfWork.Bookings.Find(item.ID);
             if (existingItem == null)
             {
                 return NotFound(ErrorCode.RecordNotFound.ToString());
             }
-            item.Performance = existingItem.Performance;
-            //_todoRepository.Update(item);
-            //_unitOfWork.Bookings.Update(item);
-            _unitOfWork.Bookings.Delete(existingItem);
-            _unitOfWork.Bookings.Insert(item);
+            item.Name = existingItem.Name;
+            _unitOfWork.Bookings.Update(item);
+            
             int affectedItems = await _unitOfWork.Complete();
         }
         catch (Exception)
