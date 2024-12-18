@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Todo.API.Profiles;
 using Todo.Data;
 using Todo.Data.Repository;
+using TodoAPI.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +19,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("Todo"))
 );
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//builder.Services.AddAutoMapper(typeof(TodoItemProfile));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); //Automatically loads all profiles in Profile folder
 
 var app = builder.Build();
 

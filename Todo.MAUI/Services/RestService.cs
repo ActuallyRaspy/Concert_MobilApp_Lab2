@@ -48,7 +48,7 @@ _client = new HttpClient();
                 string content = await response.Content.ReadAsStringAsync();
                 Items = _mapper.Map<List<TodoItem>>
                 (
-                JsonSerializer.Deserialize<List<TodoItemDto>>(content, _serializerOptions)
+                JsonSerializer.Deserialize<List<BookingDto>>(content, _serializerOptions)
                 );
             }
         }
@@ -64,7 +64,7 @@ _client = new HttpClient();
         Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
         try
         {
-            string json = JsonSerializer.Serialize<TodoItemDto>(_mapper.Map<TodoItemDto>(item),
+            string json = JsonSerializer.Serialize<BookingDto>(_mapper.Map<BookingDto>(item),
             _serializerOptions);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage response = null!;

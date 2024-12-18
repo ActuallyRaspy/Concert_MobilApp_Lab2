@@ -30,13 +30,27 @@ public class BookingsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> List()
+    public async Task<IActionResult> ListBookings()
     {
-        return Ok(_mapper.Map<IEnumerable<TodoItemDto>>(await _unitOfWork.Bookings.All()));
+        return Ok(_mapper.Map<IEnumerable<BookingDto>>(await _unitOfWork.Bookings.All()));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> ListConcerts()
+    {
+        return Ok(_mapper.Map<IEnumerable<BookingDto>>(await _unitOfWork.Concerts.All()));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ListPerformances()
+    {
+        return Ok(_mapper.Map<IEnumerable<BookingDto>>(await _unitOfWork.Performances.All()));
+    }
+
+
+
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] TodoItemDto dto)
+    public async Task<IActionResult> Create([FromBody] BookingDto dto)
     {
         Booking item;
         try
@@ -59,11 +73,11 @@ public class BookingsController : ControllerBase
         {
             return BadRequest(ErrorCode.CouldNotCreateItem.ToString());
         }
-        return Ok(_mapper.Map<TodoItemDto>(item));
+        return Ok(_mapper.Map<BookingDto>(item));
     }
 
     [HttpPut]
-    public async Task<IActionResult> Edit([FromBody] TodoItemDto dto)
+    public async Task<IActionResult> Edit([FromBody] BookingDto dto) // Only edits booking.performance, should probably be changed
     {
         Booking item;
         try
@@ -78,7 +92,7 @@ public class BookingsController : ControllerBase
             {
                 return NotFound(ErrorCode.RecordNotFound.ToString());
             }
-            item.Comments = existingItem.Comments;
+            item.Performance = existingItem.Performance;
             //_todoRepository.Update(item);
             //_unitOfWork.Bookings.Update(item);
             _unitOfWork.Bookings.Delete(existingItem);
@@ -90,7 +104,7 @@ public class BookingsController : ControllerBase
             return BadRequest(ErrorCode.CouldNotUpdateItem.ToString());
         }
         //return NoContent();
-        return Ok(_mapper.Map<TodoItemDto>(item));
+        return Ok(_mapper.Map<BookingDto>(item));
     }
 
     [HttpDelete("{id}")]
@@ -113,6 +127,6 @@ public class BookingsController : ControllerBase
             return BadRequest(ErrorCode.CouldNotDeleteItem.ToString());
         }
         //return NoContent();
-        return Ok(_mapper.Map<TodoItemDto>(item));
+        return Ok(_mapper.Map<BookingDto>(item));
     }
 }
