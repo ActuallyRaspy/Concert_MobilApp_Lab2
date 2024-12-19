@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Todo.MAUI.ViewModels" 
              x:Class="Todo.MAUI.Views.ConcertDetailsPage"
+             xmlns:models="clr-namespace:Todo.MAUI.Models"
              Title="ConcertDetailsPage">
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
@@ -21,6 +22,28 @@
                         <Label Text="{Binding Description}" VerticalOptions="Center" />
                     </VerticalStackLayout>
                 </Frame>
+                <CollectionView    
+                    ItemsSource="{Binding Performances}"
+                    SelectedItem="{Binding SelectedPerformance}"
+                    SelectionMode="Single"
+                    SelectionChangedCommand="{Binding NavigateToBookingCommand}"
+                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Performance">
+                            <Grid Padding="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition  Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label Text="{Binding Date}" Margin="5,0"  FontSize="24"/>
+                                    <Label Text="{Binding Location}" Margin="5,0"  TextColor="Gray"/>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

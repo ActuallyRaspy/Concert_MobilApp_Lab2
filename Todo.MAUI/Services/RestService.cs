@@ -15,6 +15,8 @@ public class RestService : IRestService
     private IMapper _mapper;
 
     public List<Concert>? Items { get; private set; }
+    public List<Performance>? Performances { get; private set; }
+
 
     public RestService(IHttpsClientHandlerService service, IMapper mapper)
     {
@@ -39,7 +41,7 @@ _client = new HttpClient();
     public async Task<List<Concert>?> RefreshDataAsync()
     {
         Items = new List<Concert>();
-        Uri uri = new Uri(string.Format(Constants.BaseUrl, string.Empty));
+        Uri uri = new Uri(string.Format(Constants.BaseUrl+"Concerts", string.Empty));
         Debug.WriteLine($"Requesting: {uri}"); // Prints the full URL
 
         try
@@ -60,10 +62,9 @@ _client = new HttpClient();
         }
         return Items;
     }
-
     public async Task SaveConcertAsync(Concert concert, bool isNewConcert = false)
     {
-        Uri uri = new Uri(string.Format(Constants.RestUrl, string.Empty));
+        Uri uri = new Uri(string.Format(Constants.ConcertUrl, string.Empty));
         try
         {
             string json = JsonSerializer.Serialize<BookingDto>(_mapper.Map<BookingDto>(concert),
@@ -85,12 +86,72 @@ _client = new HttpClient();
 
     public async Task DeleteConcertAsync(string id)
     {
-        Uri uri = new Uri(string.Format(Constants.RestUrl, id));
+        Uri uri = new Uri(string.Format(Constants.ConcertUrl, id));
         try
         {
             HttpResponseMessage response = await _client.DeleteAsync(uri);
             if (response.IsSuccessStatusCode)
                 Debug.WriteLine(@"\tConcert successfully deleted.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+    }
+    public async Task<List<Performance>?> RefreshPerformancesAsync()
+    {
+        Performances = new List<Performance>();
+        Uri uri = new Uri(string.Format(Constants.BaseUrl + "Performances", string.Empty));
+        Debug.WriteLine($"Requesting: {uri}"); // Prints the full URL
+
+        try
+        {
+            HttpResponseMessage response = await _client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Performances = _mapper.Map<List<Performance>>
+                (
+                JsonSerializer.Deserialize<List<PerformanceDto>>(content, _serializerOptions)
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return Performances;
+    }
+    public async Task SavePerformanceAsync(Performance performance, bool isNewPerformance = false)
+    {
+        Uri uri = new Uri(string.Format(Constants.PerformanceUrl, string.Empty));
+        try
+        {
+            string json = JsonSerializer.Serialize<PerformanceDto>(_mapper.Map<PerformanceDto>(performance),
+            _serializerOptions);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = null!;
+            if (isNewPerformance)
+                response = await _client.PostAsync(uri, content);
+            else
+                response = await _client.PutAsync(uri, content);
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\tPerformance successfully saved.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+    }
+
+    public async Task DeletePerformanceAsync(string id)
+    {
+        Uri uri = new Uri(string.Format(Constants.PerformanceUrl, id));
+        try
+        {
+            HttpResponseMessage response = await _client.DeleteAsync(uri);
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\tPerformance successfully deleted.");
         }
         catch (Exception ex)
         {

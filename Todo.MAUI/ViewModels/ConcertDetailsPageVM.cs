@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Todo.MAUI.Services;
 using Todo.MAUI.Models;
+using System.Windows.Input;
 
 
 namespace Todo.MAUI.ViewModels
@@ -15,13 +16,16 @@ namespace Todo.MAUI.ViewModels
     public partial class ConcertDetailsPageVM : ObservableObject
     {
         private IConcertService _concertService;
+        private IPerformanceService _performanceService;
 
-        public ConcertDetailsPageVM(IConcertService concertService)
+        public ConcertDetailsPageVM(IConcertService concertService, IPerformanceService performanceService)
         {
             _concertService = concertService;
+            _performanceService = performanceService;
         }
+
         [ObservableProperty]
-        private Concert selectedConcert;
+        private Performance selectedPerformance;
 
         [ObservableProperty]
         private string iD;
@@ -31,6 +35,9 @@ namespace Todo.MAUI.ViewModels
 
         [ObservableProperty]
         private string description;
+        [ObservableProperty]
+        private IEnumerable<Performance> performances;
+
         partial void OnIDChanged(string value)
         {
             // Call LoadConcert with the new ID
@@ -56,10 +63,12 @@ namespace Todo.MAUI.ViewModels
         {
             try
             {
-                List<Concert> concertlist = await _concertService.GetConcertsAsync();
-                Concert concert = concertlist.FirstOrDefault(c => c.ID == id);
+                List<Concert> concertList = await _concertService.GetConcertsAsync();
+                Concert concert = concertList.FirstOrDefault(c => c.ID == id);
                 Title = concert.Title;
                 Description = concert.Description;
+                IEnumerable<Performance> performanceList = await _performanceService.GetPerformancesAsync();
+                Performances = performanceList.Where(c => c.ConcertID == id);
             }
             catch (Exception ex)
             {
@@ -69,6 +78,23 @@ namespace Todo.MAUI.ViewModels
         [RelayCommand]
         public async Task Test()
         {
+        }
+
+        [RelayCommand]
+        private async Task NavigateToBooking(Performance performance)
+        {
+            if (performance != null)
+            {
+                try
+                {
+                    SelectedPerformance = null;
+                    await Shell.Current.GoToAsync($"///BookPerformancePage?id={performance.ID}");
+                }
+                catch (Exception ex)
+                {
+                    await Shell.Current.DisplayAlert("Error", "Unable to navigate to Performance page" + ex.Message, "OK");
+                }
+            }
         }
     }
 }

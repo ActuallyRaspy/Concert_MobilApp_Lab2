@@ -23,7 +23,7 @@ namespace Todo.MAUI.Models
         [StringLength(500)]
         public required string Description { get; set; }
 
-        public ICollection<PerformanceDto>? Performances { get; set; } = new List<PerformanceDto>();
+        public ICollection<Performance>? Performances { get; set; } = new List<Performance>();
 
     }
 }
