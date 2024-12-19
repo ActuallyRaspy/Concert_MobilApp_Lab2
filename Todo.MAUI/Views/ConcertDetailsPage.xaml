@@ -4,10 +4,24 @@
              xmlns:viewmodels="clr-namespace:Todo.MAUI.ViewModels" 
              x:Class="Todo.MAUI.Views.ConcertDetailsPage"
              Title="ConcertDetailsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Button Command="{Binding TestCommand}"
+            Text="TestCommand"/>
+        <ScrollView Grid.Row="1" Padding="10,0,10,10">
+            <VerticalStackLayout Spacing="10">
+                <Button Text="←" Command="{Binding GoBackCommand}" Grid.Column="2" Margin="10,0,10,0" HeightRequest="50" WidthRequest="50" FontSize="Medium" TextColor="Black" BackgroundColor="White" HorizontalOptions="Start"/>
+                <Frame BorderColor="LightGray" Padding="10">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="Large" HorizontalTextAlignment="Center"/>
+                        <Label Text="{Binding Description}" VerticalOptions="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>
