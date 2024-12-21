@@ -11,11 +11,24 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <ScrollView Grid.Row="1" Padding="10,0,10,10">
-                <VerticalStackLayout Spacing="10">
-                    <Button Text="←" Command="{Binding GoBackCommand}" Grid.Column="2" Margin="10,0,10,0" HeightRequest="50" WidthRequest="50" FontSize="Medium" TextColor="Black" BackgroundColor="White" HorizontalOptions="Start"/>
-                </VerticalStackLayout>
-            </ScrollView>
+            <VerticalStackLayout Grid.Row="1" Padding="10,0,10,10">
+                <Button Text="←" Command="{Binding GoBackCommand}" Grid.Column="2" Margin="10,0,10,0" HeightRequest="50" WidthRequest="50" FontSize="Medium" TextColor="Black" BackgroundColor="White" HorizontalOptions="Start"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Grid.Row="2" Padding="10,0,10,10">
+                <Frame BorderColor="LightGray" Padding="10">
+                    <VerticalStackLayout>
+                    <Label Text="{Binding ChosenConcert.Title}" Margin="5,0"  FontSize="24" />
+                    <Label Text="{Binding ChosenConcert.Description}" Margin="5,0"  FontSize="24" />
+                    <Label Text="{Binding ChosenPerformance.Location}" Margin="5,0"  FontSize="24" />
+                    <Label Text="{Binding ChosenPerformance.Date}" Margin="5,0"  FontSize="24" />
+                    </VerticalStackLayout>
+                </Frame>
+                <Label Text="Name for booking" Margin="5,0"  FontSize="24" />
+                <Entry  Keyboard="Text" MaxLength="20" Placeholder="John Johnson" Text="{Binding NameInput}" />
+                <Label Text="Email" Margin="5,0"  FontSize="24" />
+                <Entry  Keyboard="Email" MaxLength="20" Placeholder="xx@yy.zz" Text="{Binding EmailInput}" />
+                <Button Command="{Binding BookPerformanceCommand}" Text="Book Performance"></Button>
+            </VerticalStackLayout>
         </Grid>
     </VerticalStackLayout>
 </ContentPage>

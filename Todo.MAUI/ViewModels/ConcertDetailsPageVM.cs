@@ -75,10 +75,6 @@ namespace Todo.MAUI.ViewModels
                 await Shell.Current.DisplayAlert("Error", "Concert couldnt be loaded: " + ex.Message, "OK");
             }
         }
-        [RelayCommand]
-        public async Task Test()
-        {
-        }
 
         [RelayCommand]
         private async Task NavigateToBooking(Performance performance)

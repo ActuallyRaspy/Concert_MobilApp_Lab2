@@ -29,6 +29,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IRestService, RestService>();
         builder.Services.AddSingleton<IConcertService, ConcertService>();
         builder.Services.AddSingleton<IPerformanceService, PerformanceService>();
+        builder.Services.AddSingleton<IBookingService, BookingService>();
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         //builder.Services.AddAutoMapper(typeof(TodoItemProfile));
 

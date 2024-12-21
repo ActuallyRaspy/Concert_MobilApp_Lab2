@@ -13,22 +13,20 @@ namespace Todo.MAUI.ViewModels
 {
     public partial class BookingsPageVM : ObservableObject
     {
-        private readonly IConcertService concertservice;
+        private readonly IBookingService _bookingService;
 
         [ObservableProperty]
         public string text;
-
+        [ObservableProperty]
+        public ICollection<Booking> bookings;
         [RelayCommand]
         public async Task Test()
         {
-            List<Concert> test = new(await concertservice.GetConcertsAsync() ?? []);
-            foreach (Concert concert in test) {
-                await Shell.Current.DisplayAlert("Error", concert.Title+concert.Description, "OK");
-            }
+            Bookings = await _bookingService.GetBookingsAsync();
         }
-        public BookingsPageVM(IConcertService concertservice)
+        public BookingsPageVM(IBookingService bookingService)
         {
-            this.concertservice = concertservice;
+            _bookingService = bookingService;
         }
 
     }

@@ -16,6 +16,8 @@ public class RestService : IRestService
 
     public List<Concert>? Items { get; private set; }
     public List<Performance>? Performances { get; private set; }
+    public List<Booking>? Bookings { get; private set; }
+
 
 
     public RestService(IHttpsClientHandlerService service, IMapper mapper)
@@ -158,4 +160,66 @@ _client = new HttpClient();
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
+
+    public async Task<List<Booking>?> RefreshBookingsAsync()
+    {
+        Bookings = new List<Booking>();
+        Uri uri = new Uri(string.Format(Constants.BaseUrl + "Bookings", string.Empty));
+        Debug.WriteLine($"Requesting: {uri}"); // Prints the full URL
+
+        try
+        {
+            HttpResponseMessage response = await _client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Bookings = _mapper.Map<List<Booking>>
+                (
+                JsonSerializer.Deserialize<List<BookingDto>>(content, _serializerOptions)
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return Bookings;
+    }
+    public async Task SaveBookingAsync(Booking booking, bool isNewBooking = false)
+    {
+        Uri uri = new Uri(string.Format(Constants.BookingUrl, string.Empty));
+        try
+        {
+            string json = JsonSerializer.Serialize<BookingDto>(_mapper.Map<BookingDto>(booking),
+            _serializerOptions);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = null!;
+            if (isNewBooking)
+                response = await _client.PostAsync(uri, content);
+            else
+                response = await _client.PutAsync(uri, content);
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\tBooking successfully saved.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+    }
+
+    public async Task DeleteBookingAsync(string id)
+    {
+        Uri uri = new Uri(string.Format(Constants.BookingUrl, id));
+        try
+        {
+            HttpResponseMessage response = await _client.DeleteAsync(uri);
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\tBooking successfully deleted.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+    }
+
 }

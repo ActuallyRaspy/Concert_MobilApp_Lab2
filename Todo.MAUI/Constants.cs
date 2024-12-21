@@ -8,7 +8,7 @@ public static class Constants
     // if your debug target is a physical android device
     public static string LocalhostUrl =
     DeviceInfo.Platform == DevicePlatform.Android
-    ? (DeviceInfo.DeviceType == DeviceType.Physical ? "192.168.1.148" : "10.0.2.2")
+    ? (DeviceInfo.DeviceType == DeviceType.Physical ? "localhost:" : "localhost:")
     : "localhost";
     public static string Scheme = "https"; // or http
     public static string Port = "44316"; // or 5000
