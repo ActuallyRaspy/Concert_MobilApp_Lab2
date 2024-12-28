@@ -13,6 +13,8 @@ public class UnitOfWork : IUnitOfWork
     {
         this.context = context;
         Bookings = new BookingRepository(context);
+        Concerts = new ConcertRepository(context);
+        Performances = new PerformanceRepository(context);
     }
 
     public async Task<int> Complete()

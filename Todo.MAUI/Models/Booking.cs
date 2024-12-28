@@ -24,5 +24,8 @@ namespace Todo.MAUI.Models
         [Required]
         [ForeignKey(nameof(Performance.ID))]
         public required string PerformanceID { get; set; }
+
+        [Required]
+        public Performance Performance { get; set; }
     }
 }

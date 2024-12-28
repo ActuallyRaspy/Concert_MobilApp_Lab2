@@ -14,7 +14,7 @@ public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<Applicati
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json").Build();
 
-        var connectionString = builder.GetConnectionString("Todo");
+        var connectionString = builder.GetConnectionString("ConcertApp");
 
         if (string.IsNullOrEmpty(connectionString))
             throw new InvalidOperationException("The connection string was not set.");

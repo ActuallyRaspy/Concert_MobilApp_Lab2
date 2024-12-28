@@ -15,7 +15,6 @@ public class ConcertService : IConcertService
     {
         return _restService.RefreshDataAsync();
     }
-
     public Task SaveConcertAsync(Concert concert, bool isNewConcert = false)
     {
         return _restService.SaveConcertAsync(concert, isNewConcert);

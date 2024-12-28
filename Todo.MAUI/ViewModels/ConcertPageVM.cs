@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,11 +32,27 @@ namespace Todo.MAUI.ViewModels
         public async Task LoadConcerts()
         {
             var concertlist = await concertservice.GetConcertsAsync();
-            concerts = concertlist.ToList();
+            Concerts = concertlist.ToList();
         }
         private void OnPageAppearing()
         {
             LoadConcerts();
+        }
+        [RelayCommand]
+        private async Task NavigateToDetails(Concert concert)
+        {
+            if (concert != null)
+            {
+                try
+                {
+                    SelectedConcert = null;
+                    await Shell.Current.GoToAsync($"///ConcertDetailsPage?id={concert.ID}");
+                }
+                catch (Exception ex)
+                {
+                    await Shell.Current.DisplayAlert("Error", "Unable to navigate to details page" + ex.Message, "OK");
+                }
+            }
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Todo.MAUI.ViewModels
 {
     public partial class MainPageVM : ObservableObject
     {
+
     }
 }

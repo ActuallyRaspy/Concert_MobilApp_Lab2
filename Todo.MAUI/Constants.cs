@@ -8,9 +8,15 @@ public static class Constants
     // if your debug target is a physical android device
     public static string LocalhostUrl =
     DeviceInfo.Platform == DevicePlatform.Android
-    ? (DeviceInfo.DeviceType == DeviceType.Physical ? "192.168.1.148" : "10.0.2.2")
+    ? (DeviceInfo.DeviceType == DeviceType.Physical ? "localhost:" : "localhost:")
     : "localhost";
     public static string Scheme = "https"; // or http
-    public static string Port = "5001"; // or 5000
-    public static string RestUrl = $"{Scheme}://{LocalhostUrl}:{Port}/api/todoitems/{{0}}";
+    public static string Port = "44316"; // or 5000
+    public static string BaseUrl = $"{Scheme}://{LocalhostUrl}:{Port}/api/";
+
+    // URL with dynamic ID for operations like getting by ID or deleting
+    public static string ConcertUrl => $"{Scheme}://{LocalhostUrl}:{Port}/api/Concerts/{{0}}";
+    public static string BookingUrl => $"{Scheme}://{LocalhostUrl}:{Port}/api/Bookings/{{0}}";
+    public static string PerformanceUrl => $"{Scheme}://{LocalhostUrl}:{Port}/api/Performances/{{0}}";
+
 }

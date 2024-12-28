@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Todo.Data.DTO;
 
 namespace Todo.MAUI.Models
 {
     public class Concert
     {
-        [Key]
-        public required string ID { get; set; }
+        [Required]
+        [ReadOnly(true)]
+        public required string ID { get; init; } // Init for Read-only
 
         [Required]
         [StringLength(50)]
@@ -19,6 +22,8 @@ namespace Todo.MAUI.Models
         [Required]
         [StringLength(500)]
         public required string Description { get; set; }
+
+        public ICollection<Performance>? Performances { get; set; } = new List<Performance>();
 
     }
 }

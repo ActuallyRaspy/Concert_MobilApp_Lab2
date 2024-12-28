@@ -3,11 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Todo.MAUI.ViewModels" 
              x:Class="Todo.MAUI.Views.BookingsPage"
-             Title="BookingsPage">
+             Title="BookingsPage"
+             xmlns:models="clr-namespace:Todo.MAUI.Models">
     <VerticalStackLayout>
         <Label 
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+		<Button 
+			Command="{Binding TestCommand}"
+			Text="Press Me"/>
+		<Label 
+			Text="{Binding Text}"/>
+        <CollectionView    
+ItemsSource="{Binding Bookings}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Booking">
+                    <Grid Padding="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition  Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="{Binding PerformanceID}" Margin="5,0"  FontSize="24"/>
+                            <Label Text="{Binding Email}" Margin="5,0"  TextColor="Gray"/>
+                            <Label Text="{Binding Name}" Margin="5,0"  TextColor="Gray"/>
+                    </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

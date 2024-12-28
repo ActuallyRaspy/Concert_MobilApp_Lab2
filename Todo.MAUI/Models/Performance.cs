@@ -26,5 +26,8 @@ namespace Todo.MAUI.Models
         [Required]
         [ForeignKey(nameof(Concert.ID))]
         public required string ConcertID { get; set; }
+
+        [Required]
+        public Concert Concert { get; set; }
     }
 }
