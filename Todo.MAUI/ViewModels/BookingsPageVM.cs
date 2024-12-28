@@ -48,6 +48,5 @@ namespace Todo.MAUI.ViewModels
             _performanceService = performanceService;
             _concertService = concertService;
         }
-
     }
 }
