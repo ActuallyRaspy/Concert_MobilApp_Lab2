@@ -159,8 +159,6 @@ public class ApplicationDbContext : DbContext
             Location = "Berghain, Berlin",
             ConcertID = concert1.ID, 
         };
-        builder.Entity<Performance>().Ignore(p => p.Bookings);
-
         builder.Entity<Performance>().HasData(performance1, performance2, performance3, performance4, performance5, performance6, performance7);
         
         var booking1 = new Booking
