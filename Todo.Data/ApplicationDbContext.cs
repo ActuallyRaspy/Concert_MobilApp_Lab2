@@ -110,8 +110,6 @@ public class ApplicationDbContext : DbContext
             Date = DateTime.Parse("2024-04-01"),
             Location = "Madison Square Garden, NYC",
             ConcertID = concert1.ID,
-            Concert = concert1, 
-            Bookings = new List<Booking>() 
         };
 
         var performance2 = new Performance
@@ -120,8 +118,6 @@ public class ApplicationDbContext : DbContext
             Date = DateTime.Parse("2024-05-15"),
             Location = "Central Park, NYC",
             ConcertID = concert2.ID, 
-            Concert = concert2, 
-            Bookings = new List<Booking>() 
         };
 
         var performance3 = new Performance
@@ -130,8 +126,6 @@ public class ApplicationDbContext : DbContext
             Date = DateTime.Parse("2024-06-10"),
             Location = "Lake Tahoe, CA",
             ConcertID = concert3.ID, 
-            Concert = concert3,
-            Bookings = new List<Booking>() 
         };
 
         var performance4 = new Performance
@@ -140,8 +134,6 @@ public class ApplicationDbContext : DbContext
             Date = DateTime.Parse("2024-07-20"),
             Location = "The Fillmore, San Francisco",
             ConcertID = concert1.ID, 
-            Concert = concert1, 
-            Bookings = new List<Booking>() 
         };
 
         var performance5 = new Performance
@@ -150,8 +142,6 @@ public class ApplicationDbContext : DbContext
             Date = DateTime.Parse("2024-08-05"),
             Location = "Staples Center, LA",
             ConcertID = concert2.ID, 
-            Concert = concert2, 
-            Bookings = new List<Booking>() 
         };
 
         var performance6 = new Performance
@@ -160,8 +150,6 @@ public class ApplicationDbContext : DbContext
             Date = DateTime.Parse("2024-09-01"),
             Location = "Royal Albert Hall, London",
             ConcertID = concert3.ID, 
-            Concert = concert3, 
-            Bookings = new List<Booking>() 
         };
 
         var performance7 = new Performance
@@ -170,9 +158,8 @@ public class ApplicationDbContext : DbContext
             Date = DateTime.Parse("2024-10-10"),
             Location = "Berghain, Berlin",
             ConcertID = concert1.ID, 
-            Concert = concert1, 
-            Bookings = new List<Booking>() 
         };
+        builder.Entity<Performance>().Ignore(p => p.Bookings);
 
         builder.Entity<Performance>().HasData(performance1, performance2, performance3, performance4, performance5, performance6, performance7);
         
@@ -182,7 +169,6 @@ public class ApplicationDbContext : DbContext
             Name = "John Doe",
             Email = "johndoe@example.com",
             PerformanceID = performance1.ID, 
-            Performance = performance1 
         };
 
         var booking2 = new Booking
@@ -191,7 +177,6 @@ public class ApplicationDbContext : DbContext
             Name = "Jane Smith",
             Email = "janesmith@example.com",
             PerformanceID = performance2.ID, 
-            Performance = performance2 
         };
 
         var booking3 = new Booking
@@ -200,7 +185,6 @@ public class ApplicationDbContext : DbContext
             Name = "Alice Johnson",
             Email = "alicejohnson@example.com",
             PerformanceID = performance3.ID, 
-            Performance = performance3 
         };
 
         var booking4 = new Booking
@@ -209,7 +193,6 @@ public class ApplicationDbContext : DbContext
             Name = "Bob Williams",
             Email = "bobwilliams@example.com",
             PerformanceID = performance4.ID, 
-            Performance = performance4
         };
 
         var booking5 = new Booking
@@ -218,7 +201,6 @@ public class ApplicationDbContext : DbContext
             Name = "Charlie Brown",
             Email = "charliebrown@example.com",
             PerformanceID = performance5.ID,
-            Performance = performance5 
         };
 
         var booking6 = new Booking
@@ -236,7 +218,6 @@ public class ApplicationDbContext : DbContext
             Name = "Edward Green",
             Email = "edwardgreen@example.com",
             PerformanceID = performance7.ID, 
-            Performance = performance7 
         };
 
         var booking8 = new Booking
@@ -245,7 +226,6 @@ public class ApplicationDbContext : DbContext
             Name = "Fiona Lee",
             Email = "fionalee@example.com",
             PerformanceID = performance1.ID, 
-            Performance = performance1
         };
 
         var booking9 = new Booking
@@ -254,7 +234,6 @@ public class ApplicationDbContext : DbContext
             Name = "George Harris",
             Email = "georgeharris@example.com",
             PerformanceID = performance2.ID,
-            Performance = performance2 
         };
 
         var booking10 = new Booking
@@ -263,7 +242,6 @@ public class ApplicationDbContext : DbContext
             Name = "Hannah King",
             Email = "hannahking@example.com",
             PerformanceID = performance3.ID, 
-            Performance = performance3 
         };
 
         var booking11 = new Booking
@@ -272,7 +250,6 @@ public class ApplicationDbContext : DbContext
             Name = "Ian White",
             Email = "ianwhite@example.com",
             PerformanceID = performance4.ID, 
-            Performance = performance4 
         };
 
         var booking12 = new Booking
@@ -281,7 +258,6 @@ public class ApplicationDbContext : DbContext
             Name = "Julia Black",
             Email = "juliablack@example.com",
             PerformanceID = performance5.ID, 
-            Performance = performance5 
         };
 
         builder.Entity<Booking>().HasData(booking7, booking8, booking9, booking10, booking11, booking12);
