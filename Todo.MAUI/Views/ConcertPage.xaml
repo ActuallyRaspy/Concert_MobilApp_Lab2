@@ -2,33 +2,37 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Todo.MAUI.ViewModels" 
-             x:Class="Todo.MAUI.Views.ConcertPage"
              xmlns:models="clr-namespace:Todo.MAUI.Models"
+             x:Class="Todo.MAUI.Views.ConcertPage"
              Title="ConcertPage">
+
     <VerticalStackLayout>
-        <ScrollView>
-            <CollectionView    
+        <CollectionView    
             ItemsSource="{Binding Concerts}"
             SelectedItem="{Binding SelectedConcert}"
             SelectionMode="Single"
             SelectionChangedCommand="{Binding NavigateToDetailsCommand}"
-            SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Concert">
-                        <Grid Padding="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition  Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <VerticalStackLayout Grid.Column="1">
-                                <Label Text="{Binding Title}" Margin="5,0"  FontSize="24"/>
-                                <Label Text="{Binding Description}" Margin="5,0"  TextColor="Gray"/>
-                            </VerticalStackLayout>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </ScrollView>
+            SelectionChangedCommandParameter="{Binding SelectedConcert}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Concert">
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="{Binding Title}" 
+                                   FontSize="24" 
+                                   Margin="5,0"/>
+                            <Label Text="{Binding Description}" 
+                                   TextColor="Gray" 
+                                   Margin="5,0"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>

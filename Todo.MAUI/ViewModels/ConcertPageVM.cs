@@ -1,9 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Todo.MAUI.Models;
@@ -17,27 +14,43 @@ namespace Todo.MAUI.ViewModels
 
         public ICommand PageAppearingCommand { get; }
 
-
         [ObservableProperty]
         private Concert selectedConcert;
 
         [ObservableProperty]
         private List<Concert> concerts;
+
         public ConcertPageVM(IConcertService concertservice)
         {
             this.concertservice = concertservice;
-            LoadConcerts();
-            PageAppearingCommand = new Command(OnPageAppearing);
+            PageAppearingCommand = new AsyncRelayCommand(OnPageAppearing);
         }
+
         public async Task LoadConcerts()
         {
-            var concertlist = await concertservice.GetConcertsAsync();
-            Concerts = concertlist.ToList();
+            try
+            {
+                concerts = await concertservice.GetConcertsAsync();
+                
+                if (concerts != null)
+                {
+                   concerts = new List<Concert>(concerts); // Force PropertyChanged
+                }
+                OnPropertyChanged(nameof(concerts)); // Explicit notification
+
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to load concerts: {ex.Message}", "OK");
+            }
         }
-        private void OnPageAppearing()
+
+        private async Task OnPageAppearing()
         {
-            LoadConcerts();
+
+            await LoadConcerts();
         }
+
         [RelayCommand]
         private async Task NavigateToDetails(Concert concert)
         {
@@ -50,7 +63,7 @@ namespace Todo.MAUI.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    await Shell.Current.DisplayAlert("Error", "Unable to navigate to details page" + ex.Message, "OK");
+                    await Shell.Current.DisplayAlert("Error", $"Unable to navigate to details page: {ex.Message}", "OK");
                 }
             }
         }

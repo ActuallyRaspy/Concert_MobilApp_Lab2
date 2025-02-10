@@ -4,24 +4,41 @@ namespace Todo.MAUI.Services;
 
 public class ConcertService : IConcertService
 {
-    IRestService _restService;
+    private readonly IRestService _restService;
 
-    public ConcertService(IRestService service)
+    public ConcertService(IRestService restService)
     {
-        _restService = service;
+        _restService = restService ?? throw new ArgumentNullException(nameof(restService));
     }
 
-    public Task<List<Concert>?> GetConcertsAsync()
+    public async Task<List<Concert>> GetConcertsAsync()
     {
-        return _restService.RefreshDataAsync();
+        try
+        {
+            var concerts = await _restService.RefreshDataAsync();
+            return concerts ?? new List<Concert>();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception or handle it appropriately
+            Console.WriteLine($"Error fetching concerts: {ex.Message}");
+            throw; // Rethrow to ensure visibility of the error
+        }
     }
+
     public Task SaveConcertAsync(Concert concert, bool isNewConcert = false)
     {
+        if (concert == null)
+            throw new ArgumentNullException(nameof(concert));
+
         return _restService.SaveConcertAsync(concert, isNewConcert);
     }
 
     public Task DeleteConcertAsync(Concert concert)
     {
+        if (concert == null)
+            throw new ArgumentNullException(nameof(concert));
+
         return _restService.DeleteConcertAsync(concert.ID);
     }
 }
