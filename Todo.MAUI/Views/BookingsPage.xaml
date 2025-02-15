@@ -3,57 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewmodels="clr-namespace:Todo.MAUI.ViewModels" 
              x:Class="Todo.MAUI.Views.BookingsPage"
-             Title="BookingsPage"
+             Title="Bookings"
+             Padding="10"
              xmlns:models="clr-namespace:Todo.MAUI.Models">
-    <VerticalStackLayout>
-        <Entry Placeholder="search for Email" Text="{Binding Text}"/>
-        <Button 
-			Command="{Binding SearchCommand}"
-			Text="Search"/>
-        <Label Text="Bookings:" Margin="5,0"  FontSize="24"></Label>
-            <ScrollView>
-            <CollectionView    
-            ItemsSource="{Binding Bookings}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Booking">
-                    <Grid Padding="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition  Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <VerticalStackLayout Grid.Column="1">
-                                <HorizontalStackLayout>
-                                    <Label Text="Title:" Margin="5,0"  FontSize="24"/>
-                                    <Label Text="{Binding Performance.Concert.Title}" Margin="5,0"  FontSize="24"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout>
-                                    <Label Text="Date:" Margin="5,0"  FontSize="24"/>
-                                    <Label Text="{Binding Performance.Date}" Margin="5,0"  FontSize="24"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout>
-                                    <Label Text="Location:" Margin="5,0"  FontSize="24"/>
-                                    <Label Text="{Binding Performance.Location}" Margin="5,0"  FontSize="24"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout>
-                                    <Label Text="Email for booking:" Margin="5,0"  TextColor="Gray"/>
-                                    <Label Text="{Binding Email}" Margin="5,0"  TextColor="Gray"/>
-                                </HorizontalStackLayout>
-                                <HorizontalStackLayout>
-                                    <Label Text="Name for booking:" Margin="5,0"  TextColor="Gray"/>
-                                    <Label Text="{Binding Name}" Margin="5,0"  TextColor="Gray"/>
-                                </HorizontalStackLayout>
-                                <Label Text=" " Margin="5,0"  TextColor="Gray"/>
-                            </VerticalStackLayout>
-                            <Button Text="Cancel" 
-                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveBookingCommand}" 
-                                    CommandParameter="{Binding .}" 
-                                    Grid.Column="2" 
-                                    MaximumHeightRequest="50"/>
-                        </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+
+    <VerticalStackLayout Spacing="10">
+        <Entry Placeholder="Search by Email" 
+               Text="{Binding Text}" 
+               Margin="0,10" 
+               HeightRequest="40"
+               BackgroundColor="#f0f0f0"/>
+
+        <Button Command="{Binding SearchCommand}" 
+                Text="Search"
+                BackgroundColor="#007AFF" 
+                TextColor="White" 
+                CornerRadius="8" 
+                HeightRequest="45"/>
+
+        <Label Text="Bookings" 
+               FontSize="26" 
+               FontAttributes="Bold"
+               Margin="10,10"/>
+
+        <ScrollView>
+            <CollectionView ItemsSource="{Binding Bookings}" 
+                            Margin="0,5">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Booking">
+                        <Frame Padding="15" CornerRadius="10" BackgroundColor="#ffffff" Margin="5,5" HasShadow="True">
+                            <Grid RowSpacing="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding Performance.Concert.Title}" 
+                                           FontSize="20" 
+                                           FontAttributes="Bold"
+                                           TextColor="#333"/>
+                                    <Label Text="{Binding Performance.Date, StringFormat='Date: {0}'}" FontSize="16" TextColor="#333"/>
+                                    <Label Text="{Binding Performance.Location, StringFormat='Location: {0}'}" FontSize="16" TextColor="#333"/>
+                                    <Label Text="{Binding Email, StringFormat='Email: {0}'}" FontSize="14" TextColor="Gray"/>
+                                    <Label Text="{Binding Name, StringFormat='Name: {0}'}" FontSize="14" TextColor="Gray"/>
+
+                                </VerticalStackLayout>
+
+                                <Button Text="Cancel" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveBookingCommand}" 
+                                        CommandParameter="{Binding .}" 
+                                        Grid.Column="1" 
+                                        BackgroundColor="#FF3B30"
+                                        TextColor="White" 
+                                        CornerRadius="6" 
+                                        HeightRequest="40"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </ScrollView>
     </VerticalStackLayout>
 </ContentPage>
