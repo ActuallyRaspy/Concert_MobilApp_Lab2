@@ -23,9 +23,23 @@ namespace Todo.MAUI.ViewModels
         public string text="";
         [ObservableProperty]
         public ICollection<Booking> bookings;
+        [RelayCommand]
+        public async Task RemoveBooking(Booking booking)
+        {
+            if (booking == null) return;
+
+            await _bookingService.DeleteBookingAsync(booking);
+
+            // Remove item from collection
+            var updatedList = Bookings.ToList();
+            updatedList.Remove(booking);
+
+            // Notify the UI
+            Bookings = updatedList;
+        }
 
         [RelayCommand]
-        public async Task Test()
+        public async Task Search()
         {
             var bookings = await _bookingService.GetBookingsAsync();
             var performances = await _performanceService.GetPerformancesAsync();

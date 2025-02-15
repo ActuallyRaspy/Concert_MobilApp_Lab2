@@ -8,11 +8,12 @@
     <VerticalStackLayout>
         <Entry Placeholder="search for Email" Text="{Binding Text}"/>
         <Button 
-			Command="{Binding TestCommand}"
-			Text="Press Me"/>
+			Command="{Binding SearchCommand}"
+			Text="Search"/>
+        <Label Text="Bookings:" Margin="5,0"  FontSize="24"></Label>
             <ScrollView>
             <CollectionView    
-ItemsSource="{Binding Bookings}">
+            ItemsSource="{Binding Bookings}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Booking">
                     <Grid Padding="0">
@@ -22,13 +23,34 @@ ItemsSource="{Binding Bookings}">
                             <ColumnDefinition  Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <VerticalStackLayout Grid.Column="1">
-                            <Label Text="{Binding Performance.Concert.Title}" Margin="5,0"  FontSize="24"/>
-                            <Label Text="{Binding Performance.Date}" Margin="5,0"  FontSize="24"/>
-                            <Label Text="{Binding Performance.Location}" Margin="5,0"  FontSize="24"/>
-                            <Label Text="{Binding Email}" Margin="5,0"  TextColor="Gray"/>
-                            <Label Text="{Binding Name}" Margin="5,0"  TextColor="Gray"/>
-                        </VerticalStackLayout>
-                    </Grid>
+                                <HorizontalStackLayout>
+                                    <Label Text="Title:" Margin="5,0"  FontSize="24"/>
+                                    <Label Text="{Binding Performance.Concert.Title}" Margin="5,0"  FontSize="24"/>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout>
+                                    <Label Text="Date:" Margin="5,0"  FontSize="24"/>
+                                    <Label Text="{Binding Performance.Date}" Margin="5,0"  FontSize="24"/>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout>
+                                    <Label Text="Location:" Margin="5,0"  FontSize="24"/>
+                                    <Label Text="{Binding Performance.Location}" Margin="5,0"  FontSize="24"/>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout>
+                                    <Label Text="Email for booking:" Margin="5,0"  TextColor="Gray"/>
+                                    <Label Text="{Binding Email}" Margin="5,0"  TextColor="Gray"/>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout>
+                                    <Label Text="Name for booking:" Margin="5,0"  TextColor="Gray"/>
+                                    <Label Text="{Binding Name}" Margin="5,0"  TextColor="Gray"/>
+                                </HorizontalStackLayout>
+                                <Label Text=" " Margin="5,0"  TextColor="Gray"/>
+                            </VerticalStackLayout>
+                            <Button Text="Cancel" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RemoveBookingCommand}" 
+                                    CommandParameter="{Binding .}" 
+                                    Grid.Column="2" 
+                                    MaximumHeightRequest="50"/>
+                        </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
