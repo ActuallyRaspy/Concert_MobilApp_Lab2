@@ -15,9 +15,9 @@ public class BookingService : IBookingService
     {
         return _restService.RefreshBookingsAsync();
     }
-    public Task SaveBookingAsync(Booking booking, bool isNewBooking = false)
+    public async Task<HttpResponseMessage> SaveBookingAsync(Booking booking, bool isNewBooking = false)
     {
-        return _restService.SaveBookingAsync(booking, isNewBooking);
+        return await _restService.SaveBookingAsync(booking, isNewBooking);
     }
 
     public Task DeleteBookingAsync(Booking booking)

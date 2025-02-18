@@ -11,6 +11,6 @@ public interface IRestService
     Task SavePerformanceAsync(Performance performance, bool isNewPerformance);
     Task DeletePerformanceAsync(string id);
     Task<List<Booking>?> RefreshBookingsAsync();
-    Task SaveBookingAsync(Booking booking, bool isNewBooking);
+    Task<HttpResponseMessage> SaveBookingAsync(Booking booking, bool isNewBooking);
     Task DeleteBookingAsync(string id);
 }
