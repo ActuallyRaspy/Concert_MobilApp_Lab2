@@ -72,41 +72,59 @@ namespace Todo.MAUI.ViewModels
             }
         }
         [RelayCommand]
-        private async Task BookPerformance()
+private async Task BookPerformance()
+{
+    try
+    {
+        // Validate user input
+        if (string.IsNullOrWhiteSpace(NameInput) || string.IsNullOrWhiteSpace(EmailInput))
         {
-            try
-            {
-                // Validate user input
-                if (string.IsNullOrWhiteSpace(NameInput) || string.IsNullOrWhiteSpace(EmailInput))
-                {
-                    await Shell.Current.DisplayAlert("Error", "Name and Email are required.", "OK");
-                    return;
-                }
-
-                if (ChosenPerformance == null)
-                {
-                    await Shell.Current.DisplayAlert("Error", "Please select a performance to book.", "OK");
-                    return;
-                }
-
-                // Create BookingDto object
-                var booking = new Booking
-                {
-                    ID = Guid.NewGuid().ToString(), // Generate a unique ID for the booking
-                    Name = NameInput,
-                    Email = EmailInput,
-                    PerformanceID = ChosenPerformance.ID,
-                    Performance = null
-                };
-
-                // Call API to create booking
-                await _bookingService.SaveBookingAsync(booking, true);
-                await Shell.Current.DisplayAlert("Success", "You have booked the performance", "OK");
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
-            }
+            await Shell.Current.DisplayAlert("Error", "Name and Email are required.", "OK");
+            return;
         }
+
+        if (ChosenPerformance == null)
+        {
+            await Shell.Current.DisplayAlert("Error", "Please select a performance to book.", "OK");
+            return;
+        }
+
+        // Create Booking object
+        var booking = new Booking
+        {
+            ID = Guid.NewGuid().ToString(),
+            Name = NameInput,
+            Email = EmailInput,
+            PerformanceID = ChosenPerformance.ID,
+            Performance = null
+        };
+
+        // Call API to create booking
+        HttpResponseMessage response = await _bookingService.SaveBookingAsync(booking, true);
+
+        // Check response status
+        if (response.IsSuccessStatusCode)
+        {
+            await Shell.Current.DisplayAlert("Success", "Booking saved successfully!", "OK");
+        }
+        else
+        {
+            // Handle different status codes
+            string errorMessage = response.StatusCode switch
+            {
+                System.Net.HttpStatusCode.Conflict => "This booking already exists!",
+                System.Net.HttpStatusCode.BadRequest => "Invalid booking details!",
+                System.Net.HttpStatusCode.InternalServerError => "Server error, please try again!",
+                _ => $"Unexpected error: {response.ReasonPhrase}"
+            };
+
+            await Shell.Current.DisplayAlert("Error", errorMessage, "OK");
+        }
+    }
+    catch (Exception ex)
+    {
+        await Shell.Current.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+    }
+}
     }
 }

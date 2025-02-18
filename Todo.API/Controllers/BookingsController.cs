@@ -47,11 +47,11 @@ public class BookingsController : ControllerBase
             {
                 return BadRequest(ErrorCode.BookingNameRequired.ToString());
             }
-            bool itemExists = await _unitOfWork.Bookings.DoesItemExist(item.ID);
-            if (itemExists)
+
+            var bookingCheck = _unitOfWork.Bookings.Find(s => s.Email == item.Email && s.PerformanceID == item.PerformanceID).Result;
+            if (bookingCheck.Count() > 0)
             {
-                return StatusCode(StatusCodes.Status409Conflict,
-                ErrorCode.BookingIDInUse.ToString());
+                return StatusCode(StatusCodes.Status409Conflict,ErrorCode.BookingIDInUse.ToString());
             }
             _unitOfWork.Bookings.Insert(item);
             int affectedItems = await _unitOfWork.Complete();

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
@@ -7,7 +8,7 @@ using Todo.MAUI.Models;
 
 namespace Todo.MAUI.Services;
 
-public class RestService : IRestService
+public class RestService :  IRestService
 {
     private HttpClient _client;
     private JsonSerializerOptions _serializerOptions;
@@ -185,26 +186,27 @@ _client = new HttpClient();
         }
         return Bookings;
     }
-    public async Task SaveBookingAsync(Booking booking, bool isNewBooking = false)
+    public async Task<HttpResponseMessage> SaveBookingAsync(Booking booking, bool isNewBooking = false)
     {
         Uri uri = new Uri(string.Format(Constants.BookingUrl, string.Empty));
-        try
+
+        string json = JsonSerializer.Serialize<BookingDto>(_mapper.Map<BookingDto>(booking), _serializerOptions);
+        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        HttpResponseMessage response; // Declare the variable properly
+
+        if (isNewBooking)
         {
-            string json = JsonSerializer.Serialize<BookingDto>(_mapper.Map<BookingDto>(booking),
-            _serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = null!;
-            if (isNewBooking)
-                response = await _client.PostAsync(uri, content);
-            else
-                response = await _client.PutAsync(uri, content);
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tBooking successfully saved.");
+            response = await _client.PostAsync(uri, content);  // Store response
+            Debug.WriteLine(@"\tBooking successfully saved. " + response);
         }
-        catch (Exception ex)
+        else
         {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            response = await _client.PutAsync(uri, content);  // Store response
+            Debug.WriteLine(@"\tBooking successfully updated. " + response);
         }
+
+        return response; // Ensure a valid response is returned
     }
 
     public async Task DeleteBookingAsync(string id)

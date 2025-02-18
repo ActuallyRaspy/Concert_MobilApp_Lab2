@@ -10,7 +10,7 @@ namespace Todo.MAUI.Services
     public interface IBookingService
     {
         Task<List<Booking>?> GetBookingsAsync();
-        Task SaveBookingAsync(Booking booking, bool isNewBooking);
+        Task<HttpResponseMessage> SaveBookingAsync(Booking booking, bool isNewBooking);
         Task DeleteBookingAsync(Booking booking);
     }
 }
